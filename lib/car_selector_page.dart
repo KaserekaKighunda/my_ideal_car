@@ -11,6 +11,7 @@ class CarSelectorPage extends StatefulWidget {
 class _CarSelecorPageState extends State<CarSelectorPage> {
   String _firstName = "";
   double _kms = 0;
+  bool _electric = true;
 
   void _unfocusMethode1() {
     FocusScope.of(context).unfocus();
@@ -49,6 +50,12 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
   void _updateKms(double newValue) {
     setState(() {
       _kms = newValue;
+    });
+  }
+
+  void _updateEngine(bool newvalue) {
+    setState(() {
+      _electric = newvalue;
     });
   }
 
@@ -107,6 +114,17 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
                 ),
               ],
             ),
+            _interactiveWidget(isRow: true, children: [
+              Text(_electric ? "Moteur électrique" : "Moteur thermique"),
+              Switch(
+                value: _electric,
+                onChanged: _updateEngine,
+                inactiveThumbColor: const Color.fromARGB(255, 8, 147, 211),
+                activeColor: Colors.amber,
+                //inactiveTrackColor: Color,
+                //inactiveTrackColor: Colors.white,
+              )
+            ])
           ],
         ),
       ),
