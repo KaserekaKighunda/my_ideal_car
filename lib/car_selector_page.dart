@@ -34,6 +34,12 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
     );
   }
 
+  void _updateFirstName(String newValue) {
+    setState(() {
+      _firstName = newValue;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,14 +59,9 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
             _interactiveWidget(
               children: [
                 TextField(
-                  decoration: InputDecoration(
-                      border: InputBorder.none, hintText: "Entrez votre nom"),
-                  onSubmitted: (newValue) {
-                    setState(() {
-                      _firstName = newValue;
-                    });
-                  },
-                )
+                    decoration: InputDecoration(
+                        border: InputBorder.none, hintText: "Entrez votre nom"),
+                    onSubmitted: _updateFirstName)
               ],
             ),
           ],
