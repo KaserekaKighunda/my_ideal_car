@@ -122,13 +122,13 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
       appBar: AppBar(
         title: Text(
             style: TextStyle(
-                fontSize: 36, color: const Color.fromARGB(255, 255, 255, 255)),
-            "car configator"),
+                fontSize: 24, color: const Color.fromARGB(255, 255, 255, 255)),
+            "Configurateur de voiture"),
         backgroundColor: const Color.fromARGB(255, 8, 147, 211),
         actions: [
           ElevatedButton(
             onPressed: _handleResult,
-            child: Text("I validate"),
+            child: Text("Je valide"),
           )
         ],
       ),
