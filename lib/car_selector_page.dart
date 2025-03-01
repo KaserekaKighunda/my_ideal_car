@@ -10,6 +10,7 @@ class CarSelectorPage extends StatefulWidget {
 
 class _CarSelecorPageState extends State<CarSelectorPage> {
   String _firstName = "";
+  double _kms = 0;
 
   void _unfocusMethode1() {
     FocusScope.of(context).unfocus();
@@ -42,6 +43,12 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
     setState(() {
       _firstName = newValue;
       _unfocusMethode1();
+    });
+  }
+
+  void _updateKms(double newValue) {
+    setState(() {
+      _kms = newValue;
     });
   }
 
@@ -86,6 +93,18 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
                         //label: Text("Nom"),
                         hintText: "Entrez votre nom"),
                     onSubmitted: _updateFirstName)
+              ],
+            ),
+            _interactiveWidget(
+              children: [
+                Text("Nombre de kilomètres annuel: ${_kms.toInt()}"),
+                Slider(
+                  min: 0,
+                  max: 25000,
+                  value: _kms,
+                  onChanged: _updateKms,
+                  activeColor: const Color.fromARGB(255, 8, 147, 211),
+                ),
               ],
             ),
           ],
