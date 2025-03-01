@@ -12,8 +12,19 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
   String _firstName = "";
   double _kms = 0;
   bool _electric = true;
-  List<int> _places = [2, 4, 5, 7];
+  final List<int> _places = [2, 4, 5, 7];
   int _placesselected = 2;
+
+  Map<String, bool> _options = {
+    "GPS": false,
+    "Caméra de recul": false,
+    "clim par zone": false,
+    "Régulateur de vitesse": false,
+    "Toit ouvrant": false,
+    "Siège chauffant": false,
+    "Roue de secours": false,
+    "Jantes alu": false
+  };
 
   void _unfocusMethode1() {
     FocusScope.of(context).unfocus();
@@ -64,6 +75,12 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
   void _updatePlace(int? newValue) {
     setState(() {
       _placesselected = newValue ?? 2;
+    });
+  }
+
+  void _updateOptions(bool? newBool, String key) {
+    setState(() {
+      _options[key] = newBool ?? false;
     });
   }
 
@@ -136,25 +153,41 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
                 )
               ],
             ),
-            _interactiveWidget(children: [
-              Text("Nombre de places: $_placesselected"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                mainAxisSize: MainAxisSize.max,
-                children: _places.map((palce) {
-                  return Column(
-                    children: [
-                      Radio(
-                        activeColor: Colors.amber,
-                        value: palce,
-                        groupValue: _placesselected,
-                        onChanged: _updatePlace,
-                      )
-                    ],
+            _interactiveWidget(
+              children: [
+                Text("Nombre de places: $_placesselected"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.max,
+                  children: _places.map((palce) {
+                    return Column(
+                      children: [
+                        Radio(
+                          activeColor: Colors.amber,
+                          value: palce,
+                          groupValue: _placesselected,
+                          onChanged: _updatePlace,
+                        )
+                      ],
+                    );
+                  }).toList(),
+                )
+              ],
+            ),
+            _interactiveWidget(
+              children: [
+                Text("Options du véhicule"),
+                Column(
+                    children: _options.keys.map((key) {
+                  return CheckboxListTile(
+                    title: Text(key),
+                    activeColor: const Color.fromARGB(255, 8, 147, 211),
+                    value: _options[key],
+                    onChanged: (b) => _updateOptions(b, key),
                   );
-                }).toList(),
-              )
-            ])
+                }).toList())
+              ],
+            ),
           ],
         ),
       ),
