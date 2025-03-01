@@ -11,6 +11,10 @@ class CarSelectorPage extends StatefulWidget {
 class _CarSelecorPageState extends State<CarSelectorPage> {
   String _firstName = "";
 
+  void _unfocusMethode1() {
+    FocusScope.of(context).unfocus();
+  }
+
   Padding _interactiveWidget(
       {required List<Widget> children, bool isRow = false}) {
     return Padding(
@@ -37,6 +41,7 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
   void _updateFirstName(String newValue) {
     setState(() {
       _firstName = newValue;
+      _unfocusMethode1();
     });
   }
 
@@ -44,7 +49,11 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("car configator"),
+        title: Text(
+            style: TextStyle(
+                fontSize: 36, color: const Color.fromARGB(255, 255, 255, 255)),
+            "car configator"),
+        backgroundColor: const Color.fromARGB(255, 8, 147, 211),
         actions: [
           ElevatedButton(
             onPressed: () {},
@@ -55,12 +64,27 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Text("Bienvenue: $_firstName"),
+            Text(
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.amber,
+                ),
+                "Bienvenue: $_firstName"),
             _interactiveWidget(
               children: [
                 TextField(
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: const Color.fromARGB(255, 8, 147, 211),
+                    ),
                     decoration: InputDecoration(
-                        border: InputBorder.none, hintText: "Entrez votre nom"),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
+                        //label: Text("Nom"),
+                        hintText: "Entrez votre nom"),
                     onSubmitted: _updateFirstName)
               ],
             ),
