@@ -12,6 +12,8 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
   String _firstName = "";
   double _kms = 0;
   bool _electric = true;
+  List<int> _places = [2, 4, 5, 7];
+  int _placesselected = 2;
 
   void _unfocusMethode1() {
     FocusScope.of(context).unfocus();
@@ -56,6 +58,12 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
   void _updateEngine(bool newvalue) {
     setState(() {
       _electric = newvalue;
+    });
+  }
+
+  void _updatePlace(int? newValue) {
+    setState(() {
+      _placesselected = newValue ?? 2;
     });
   }
 
@@ -114,15 +122,37 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
                 ),
               ],
             ),
-            _interactiveWidget(isRow: true, children: [
-              Text(_electric ? "Moteur électrique" : "Moteur thermique"),
-              Switch(
-                value: _electric,
-                onChanged: _updateEngine,
-                inactiveThumbColor: const Color.fromARGB(255, 8, 147, 211),
-                activeColor: Colors.amber,
-                //inactiveTrackColor: Color,
-                //inactiveTrackColor: Colors.white,
+            _interactiveWidget(
+              isRow: true,
+              children: [
+                Text(_electric ? "Moteur électrique" : "Moteur thermique"),
+                Switch(
+                  value: _electric,
+                  onChanged: _updateEngine,
+                  inactiveThumbColor: const Color.fromARGB(255, 8, 147, 211),
+                  activeColor: Colors.amber,
+                  //inactiveTrackColor: Color,
+                  //inactiveTrackColor: Colors.white,
+                )
+              ],
+            ),
+            _interactiveWidget(children: [
+              Text("Nombre de places: $_placesselected"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: _places.map((palce) {
+                  return Column(
+                    children: [
+                      Radio(
+                        activeColor: Colors.amber,
+                        value: palce,
+                        groupValue: _placesselected,
+                        onChanged: _updatePlace,
+                      )
+                    ],
+                  );
+                }).toList(),
               )
             ])
           ],
