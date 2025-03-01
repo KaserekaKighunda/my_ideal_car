@@ -9,13 +9,16 @@ class CarSelectorPage extends StatefulWidget {
 }
 
 class _CarSelecorPageState extends State<CarSelectorPage> {
+  String _result = "";
   String _firstName = "";
   double _kms = 0;
   bool _electric = true;
   final List<int> _places = [2, 4, 5, 7];
   int _placesselected = 2;
 
-  Map<String, bool> _options = {
+  String? _image;
+
+  final Map<String, bool> _options = {
     "GPS": false,
     "Caméra de recul": false,
     "clim par zone": false,
@@ -26,6 +29,17 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
     "Jantes alu": false
   };
 
+  Car? _carSelected;
+  List<Car> _cars = [
+    Car(name: "MG cyberster", url: "MG", places: 2, isElectric: true),
+    Car(name: "R5 électrique", url: "R5", places: 4, isElectric: true),
+    Car(name: "Tesla", url: "tesla", places: 5, isElectric: true),
+    Car(name: "Van VW", url: "Van", places: 7, isElectric: true),
+    Car(name: "Alpine", url: "Alpine", places: 2, isElectric: false),
+    Car(name: "Fiat 500", url: "Fiat 500", places: 4, isElectric: false),
+    Car(name: "Peugeot 3008", url: "P3008", places: 5, isElectric: false),
+    Car(name: "Dacia Jogger", url: "Jogger", places: 7, isElectric: false),
+  ];
   void _unfocusMethode1() {
     FocusScope.of(context).unfocus();
   }
@@ -84,6 +98,24 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
     });
   }
 
+  void _handleResult() {
+    setState(() {
+      _result = isGoodChoice();
+      _carSelected = _cars.firstWhere((car) =>
+          car.isElectric == _electric && car.places == _placesselected);
+    });
+  }
+
+  String isGoodChoice() {
+    if (_kms > 15000 && _electric) {
+      return "Vous devriez pensez à un moteur compte tenu du nombre de kilomètre ";
+    } else if (_kms < 5000 && !_electric) {
+      return "Vous faites peu de kilomètres, pensez à regarder les voitures électriques";
+    } else {
+      return "Voici la voiture faite pour vous";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +127,7 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
         backgroundColor: const Color.fromARGB(255, 8, 147, 211),
         actions: [
           ElevatedButton(
-            onPressed: () {},
+            onPressed: _handleResult,
             child: Text("I validate"),
           )
         ],
@@ -109,6 +141,27 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
                   color: Colors.amber,
                 ),
                 "Bienvenue: $_firstName"),
+            Card(
+              margin: EdgeInsets.all(16),
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text(_result),
+                    (_carSelected == null)
+                        ? SizedBox(
+                            height: 0,
+                          )
+                        : Image.asset(
+                            _carSelected!.urlString,
+                            fit: BoxFit.contain,
+                          ),
+                    Text(_carSelected?.name ?? "Oui Oui mobile")
+                  ],
+                ),
+              ),
+            ),
             _interactiveWidget(
               children: [
                 TextField(
@@ -193,4 +246,19 @@ class _CarSelecorPageState extends State<CarSelectorPage> {
       ),
     );
   }
+}
+
+class Car {
+  String name;
+  String url;
+  int places;
+  bool isElectric;
+
+  Car({
+    required this.name,
+    required this.url,
+    required this.places,
+    required this.isElectric,
+  });
+  String get urlString => "assets/$url.jpg";
 }
